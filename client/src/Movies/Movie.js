@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
 import MovieCard from "./MovieCard";
 
-function Movie({ addToSavedList }) {
+function Movie({ addToSavedList, getMovieList }) {
   const [movie, setMovie] = useState(null);
   const params = useParams();
   const { push } = useHistory();
@@ -17,6 +17,17 @@ function Movie({ addToSavedList }) {
 
   const handleEdit = (e) => {
     push(`/update-movie/${params.id}`);
+  };
+
+  const handleDelete = () => {
+    axios
+      .delete(`http://localhost:5000/api/movies/${params.id}`)
+      .then((res) => {
+        getMovieList();
+        setMovie(null);
+        push("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   const saveMovie = () => {
@@ -39,6 +50,7 @@ function Movie({ addToSavedList }) {
         Save
       </div>
       <button onClick={handleEdit}>Edit</button>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 }

@@ -41,6 +41,7 @@ export default function UpdateMovie(props) {
       .put(`http://localhost:5000/api/movies/${id}`, movieValues)
       .then((res) => {
         props.getMovieList();
+        setMovieValues(initialMovieValues);
         push("/");
       })
       .catch((err) => console.log(err));
