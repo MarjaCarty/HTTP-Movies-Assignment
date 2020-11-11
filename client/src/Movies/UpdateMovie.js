@@ -9,7 +9,7 @@ const initialMovieValues = {
   stars: [],
 };
 
-export default function UpdateMovie() {
+export default function UpdateMovie(props) {
   const [movieValues, setMovieValues] = useState(initialMovieValues);
   const { id } = useParams();
   const { push } = useHistory();
@@ -36,6 +36,14 @@ export default function UpdateMovie() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    axios
+      .put(`http://localhost:5000/api/movies/${id}`, movieValues)
+      .then((res) => {
+        props.getMovieList();
+        push("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
